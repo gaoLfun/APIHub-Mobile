@@ -127,6 +127,7 @@ API Hub Mobile 不是 New API 或 Sub2API 的 fork，也没有复制它们的源
 
 - [部署指南](DEPLOYMENT.md)
 - [中文使用指南](docs/zh-CN/USER_GUIDE.md)
+- [测试指南](TESTING.md)
 - [English README](README.md)
 - [English User Guide](docs/en-US/USER_GUIDE.md)
 - [安全说明](SECURITY.md)

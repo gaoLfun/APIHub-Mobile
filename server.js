@@ -370,6 +370,78 @@ async function requestSite(site, method, paths, body) {
   throw new HttpError(502, "远端站点请求失败", errors.slice(0, 3));
 }
 
+function describePayload(payload) {
+  if (Array.isArray(payload)) {
+    return { kind: "array", length: payload.length };
+  }
+  if (payload && typeof payload === "object") {
+    const keys = Object.keys(payload).slice(0, 12);
+    const data = payload.data;
+    return {
+      kind: "object",
+      keys,
+      dataKind: Array.isArray(data) ? "array" : data && typeof data === "object" ? "object" : typeof data,
+      dataLength: Array.isArray(data) ? data.length : undefined
+    };
+  }
+  return { kind: typeof payload };
+}
+
+async function probeSiteRoute(site, method, route) {
+  const headers = await adapterHeaders(site);
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 9000);
+  try {
+    const response = await fetch(`${site.baseUrl}${route}`, {
+      method,
+      headers,
+      signal: controller.signal
+    });
+    const contentType = response.headers.get("content-type") || "";
+    const text = await response.text();
+    let payload;
+    try {
+      payload = text ? JSON.parse(text) : {};
+    } catch {
+      payload = null;
+    }
+    return {
+      route,
+      method,
+      ok: response.ok,
+      status: response.status,
+      contentType,
+      body: payload ? describePayload(payload) : { kind: "text", length: text.length }
+    };
+  } catch (error) {
+    return {
+      route,
+      method,
+      ok: false,
+      status: null,
+      error: error.name === "AbortError" ? "请求超时" : error.message
+    };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function diagnoseSite(site) {
+  const actions = ["test", "models", "keys", "usage"];
+  const result = {};
+  for (const action of actions) {
+    result[action] = [];
+    for (const route of routesFor(site, action)) {
+      result[action].push(await probeSiteRoute(site, "GET", route));
+    }
+  }
+  return {
+    site: sanitizeSite(site),
+    checkedAt: nowIso(),
+    actions: result
+  };
+}
+
 function routesFor(site, action) {
   const tables = {
     newapi: {
@@ -493,6 +565,10 @@ async function api(req, res, pathname) {
         await writeStore(store);
         throw error;
       }
+    }
+
+    if (tail === "diagnostics" && req.method === "GET") {
+      return send(res, 200, await diagnoseSite(site));
     }
 
     if (tail === "models" && req.method === "GET") {

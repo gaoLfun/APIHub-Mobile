@@ -127,6 +127,7 @@ See [docs/REFERENCES.md](docs/REFERENCES.md) for compatibility notes.
 
 - [Deployment Guide](DEPLOYMENT.md)
 - [User Guide](docs/en-US/USER_GUIDE.md)
+- [Testing Guide](TESTING.md)
 - [中文说明](README.zh-CN.md)
 - [中文使用指南](docs/zh-CN/USER_GUIDE.md)
 - [Security Policy](SECURITY.md)

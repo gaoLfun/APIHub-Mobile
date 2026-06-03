@@ -315,10 +315,50 @@ function renderSiteDetail(site) {
     ${site.lastError ? `<p class="muted">${h(site.lastError)}</p>` : ""}
     <div class="actions">
       <button class="btn primary" data-action="test-site">${icon("M20 6L9 17l-5-5")}测试连接</button>
+      <button class="btn" data-action="diagnose-site">${icon("M9 3h6M9 21h6M4 8h16M4 16h16")}诊断</button>
       <button class="btn" data-action="open-site" data-edit="1">${icon("M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z")}编辑</button>
       <button class="btn danger" data-action="delete-site">${icon("M3 6h18M8 6V4h8v2M6 6l1 16h10l1-16")}删除</button>
     </div>
   `;
+}
+
+function renderDiagnostics(data) {
+  const labels = {
+    test: "连接测试",
+    models: "模型列表",
+    keys: "Key 列表",
+    usage: "基础用量"
+  };
+  const sections = Object.entries(data.actions || {}).map(([action, rows]) => `
+    <section class="form-panel" style="box-shadow:none;margin-top:10px">
+      <h3 style="margin:0 0 8px;font-size:16px">${labels[action] || action}</h3>
+      <div class="list">
+        ${(rows || []).map((row) => `
+          <article class="list-card">
+            <div class="list-title">
+              <strong>${h(row.route)}</strong>
+              <span class="pill ${row.ok ? "ok" : "bad"}">${row.status || "ERR"}</span>
+            </div>
+            <div class="meta">
+              <span class="pill">${h(row.method)}</span>
+              ${row.contentType ? `<span class="pill">${h(row.contentType.split(";")[0])}</span>` : ""}
+              ${row.body?.kind ? `<span class="pill">${h(row.body.kind)}</span>` : ""}
+              ${row.body?.dataKind ? `<span class="pill">data ${h(row.body.dataKind)}${Number.isFinite(row.body.dataLength) ? `(${row.body.dataLength})` : ""}</span>` : ""}
+            </div>
+            ${row.body?.keys?.length ? `<p class="muted">keys: ${h(row.body.keys.join(", "))}</p>` : ""}
+            ${row.error ? `<p class="muted">${h(row.error)}</p>` : ""}
+          </article>
+        `).join("")}
+      </div>
+    </section>
+  `).join("");
+  openModal(`
+    <h2>站点诊断</h2>
+    <p class="muted">${h(data.site?.name || "")} · ${h(dateText(data.checkedAt))}</p>
+    <p class="muted">诊断只展示状态码和响应结构摘要，不展示远端响应正文或凭证明文。</p>
+    ${sections}
+    <div class="actions"><button class="btn primary" type="button" data-action="close-modal">${icon("M20 6L9 17l-5-5")}完成</button></div>
+  `);
 }
 
 function renderKeys() {
@@ -652,6 +692,13 @@ document.addEventListener("click", async (event) => {
       await loadSites();
       renderApp();
       toast(`连接成功：${result.route}`, "ok");
+      return;
+    }
+
+    if (action === "diagnose-site") {
+      const site = selectedSite();
+      const data = await api(`/api/sites/${site.id}/diagnostics`);
+      renderDiagnostics(data);
       return;
     }
 
