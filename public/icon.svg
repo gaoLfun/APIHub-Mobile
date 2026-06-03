@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="API Hub">
+  <rect width="512" height="512" rx="96" fill="#0f766e"/>
+  <path d="M132 164c0-31 25-56 56-56h136c31 0 56 25 56 56v184c0 31-25 56-56 56H188c-31 0-56-25-56-56V164z" fill="#f7fbf9"/>
+  <path d="M188 176h128M188 232h168M188 288h128" stroke="#0f766e" stroke-width="28" stroke-linecap="round"/>
+  <circle cx="356" cy="288" r="28" fill="#14b8a6"/>
+  <path d="M214 364h84" stroke="#111827" stroke-width="24" stroke-linecap="round"/>
+</svg>

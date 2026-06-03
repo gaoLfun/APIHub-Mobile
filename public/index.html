@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="API Hub Mobile is a mobile-first Web/PWA for New API and Sub2API management, API key management, model lists, usage dashboards, and secure backend credential proxying.">
+    <meta name="keywords" content="API Hub Mobile, New API mobile, Sub2API mobile, API key manager, API token manager, OpenAI compatible gateway, PWA API dashboard, backend credential proxy">
+    <meta name="robots" content="index,follow">
+    <meta name="theme-color" content="#0f766e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="API Hub">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta property="og:title" content="API Hub Mobile">
+    <meta property="og:description" content="Mobile-first New API and Sub2API PWA with API Key management, model lists, usage dashboards, and backend-only credential storage.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="/icon-512.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="API Hub Mobile">
+    <meta name="twitter:description" content="Mobile-first New API and Sub2API management PWA with secure backend credential proxying.">
+    <title>API Hub Mobile</title>
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    <link rel="stylesheet" href="/app.css">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "API Hub Mobile",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "iOS Safari, Android Chrome, Web",
+        "description": "Mobile-first Web/PWA for New API and Sub2API management, API key management, model lists, usage dashboards, and secure backend credential proxying.",
+        "keywords": "New API, Sub2API, API key manager, API token manager, OpenAI compatible gateway, PWA, mobile dashboard"
+      }
+    </script>
+  </head>
+  <body>
+    <div id="app" class="app-shell" aria-live="polite">
+      <main class="boot">
+        <img src="/icon.svg" alt="" class="boot-logo">
+        <p>正在启动 API Hub Mobile</p>
+      </main>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "apihub-mobile",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mobile-first Web/PWA for New API and Sub2API account management with secure backend credential proxying.",
+  "keywords": [
+    "new-api",
+    "sub2api",
+    "api-hub",
+    "api-key-manager",
+    "api-token-manager",
+    "openai-compatible",
+    "api-gateway",
+    "credential-proxy",
+    "pwa",
+    "mobile-first",
+    "dashboard"
+  ],
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
