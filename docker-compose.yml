@@ -1,0 +1,21 @@
+services:
+  apihub-mobile:
+    build:
+      context: .
+    image: apihub-mobile:latest
+    container_name: apihub-mobile
+    restart: unless-stopped
+    ports:
+      - "${APIHUB_HOST_PORT:-4173}:4173"
+    environment:
+      PORT: "4173"
+      APIHUB_ADMIN_USER: "${APIHUB_ADMIN_USER:-admin}"
+      APIHUB_ADMIN_PASSWORD: "${APIHUB_ADMIN_PASSWORD:?Set APIHUB_ADMIN_PASSWORD in .env}"
+      APIHUB_SECRET: "${APIHUB_SECRET:?Set APIHUB_SECRET in .env}"
+      APIHUB_COOKIE_SECURE: "${APIHUB_COOKIE_SECURE:-false}"
+      APIHUB_ENABLE_MOCKS: "${APIHUB_ENABLE_MOCKS:-false}"
+    volumes:
+      - apihub_data:/app/data
+
+volumes:
+  apihub_data:

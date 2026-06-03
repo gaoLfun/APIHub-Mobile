@@ -13,7 +13,13 @@ API Hub Mobile 是一个移动端优先的 Web/PWA，用于通过自有后端代
 - **后端凭证代理**：远端 Token、JWT、API Key、管理员 Token 只在后端加密保存，并在代理请求时注入。
 - **前端不保存明文凭证**：浏览器不使用 `localStorage` 或 `sessionStorage` 保存远端敏感信息。
 - **单用户管理登录**：HttpOnly Cookie 会话、修改密码、随机初始密码。
-- **本地 mock 远端接口**：内置 New API / Sub2API mock 路由，便于验证适配器行为。
+- **支持 Docker Compose**：通过持久化数据卷和环境变量密钥运行应用。
+
+## 截图
+
+| iOS Safari 390px | Android Chrome 412px |
+| --- | --- |
+| ![API Hub Mobile 在 iOS Safari 390px 下的仪表盘](docs/assets/ios-safari-390.png) | ![API Hub Mobile 在 Android Chrome 412px 下的模型页](docs/assets/android-chrome-412.png) |
 
 ## 已实现功能
 
@@ -28,11 +34,20 @@ API Hub Mobile 是一个移动端优先的 Web/PWA，用于通过自有后端代
 | 模型列表 | 统一展示名称、供应商、分组、价格、启用状态 |
 | PWA | manifest、service worker、移动底部导航、安装支持 |
 | 安全 | AES-GCM 加密凭证、本地数据目录忽略、Secure Cookie 选项 |
+| 部署 | Node.js 运行、Docker 镜像、Docker Compose |
 
 ## 快速开始
 
+### Docker Compose
+
 ```bash
-node server.js
+cp .env.example .env
+```
+
+编辑 `.env` 后运行：
+
+```bash
+docker compose up -d --build
 ```
 
 打开：
@@ -41,10 +56,10 @@ node server.js
 http://localhost:4173
 ```
 
-默认用户名：
+### Node.js
 
-```text
-admin
+```bash
+node server.js
 ```
 
 首次启动如果没有设置 `APIHUB_ADMIN_PASSWORD`，系统会生成随机初始密码并写入：
@@ -53,7 +68,7 @@ admin
 data/initial-admin-password.txt
 ```
 
-登录后请在设置页修改密码，并删除初始密码文件。
+使用 Docker Compose 时，请在 `.env` 中设置 `APIHUB_ADMIN_PASSWORD` 和 `APIHUB_SECRET`；compose 文件会强制要求这两个值。
 
 ## 生产环境示例
 
@@ -66,7 +81,7 @@ APIHUB_ENABLE_MOCKS=false \
 node server.js
 ```
 
-部署细节见 [DEPLOYMENT.md](DEPLOYMENT.md)。
+Docker、Compose 与反向代理部署细节见 [DEPLOYMENT.md](DEPLOYMENT.md)。
 
 ## 架构
 

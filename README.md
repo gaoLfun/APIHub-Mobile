@@ -13,7 +13,13 @@ It is built for users who manage API accounts from a phone: check site health, i
 - **Backend credential proxy**: remote tokens, JWTs, API keys, and admin tokens are encrypted on the backend and injected only during proxy requests.
 - **No plaintext secrets in frontend storage**: the browser does not store remote credentials in `localStorage` or `sessionStorage`.
 - **Single-user admin login**: HttpOnly cookie session, password change, and generated initial password.
-- **Local mock endpoints**: built-in New API / Sub2API mock routes for validating adapter behavior.
+- **Docker Compose support**: run the app with a persistent data volume and environment-based secrets.
+
+## Screenshots
+
+| iOS Safari 390px | Android Chrome 412px |
+| --- | --- |
+| ![API Hub Mobile dashboard on iOS Safari 390px](docs/assets/ios-safari-390.png) | ![API Hub Mobile models page on Android Chrome 412px](docs/assets/android-chrome-412.png) |
 
 ## What It Can Do
 
@@ -28,11 +34,20 @@ It is built for users who manage API accounts from a phone: check site health, i
 | Models | Normalized name, provider, group, price, enabled state |
 | PWA | Manifest, service worker, mobile navigation, install support |
 | Security | AES-GCM encrypted credentials, ignored local data directory, secure-cookie option |
+| Deployment | Node.js runtime, Docker image, Docker Compose |
 
 ## Quick Start
 
+### Docker Compose
+
 ```bash
-node server.js
+cp .env.example .env
+```
+
+Edit `.env`, then run:
+
+```bash
+docker compose up -d --build
 ```
 
 Open:
@@ -41,10 +56,10 @@ Open:
 http://localhost:4173
 ```
 
-Default username:
+### Node.js
 
-```text
-admin
+```bash
+node server.js
 ```
 
 If `APIHUB_ADMIN_PASSWORD` is not set on first start, the app generates a random initial password and writes it to:
@@ -53,7 +68,7 @@ If `APIHUB_ADMIN_PASSWORD` is not set on first start, the app generates a random
 data/initial-admin-password.txt
 ```
 
-After logging in, change the password in Settings and delete the initial password file.
+For Docker Compose, set `APIHUB_ADMIN_PASSWORD` and `APIHUB_SECRET` in `.env`; the compose file requires both values.
 
 ## Production Example
 
@@ -66,7 +81,7 @@ APIHUB_ENABLE_MOCKS=false \
 node server.js
 ```
 
-See [DEPLOYMENT.md](DEPLOYMENT.md) for deployment details.
+See [DEPLOYMENT.md](DEPLOYMENT.md) for Docker, Compose, and reverse proxy details.
 
 ## Architecture
 

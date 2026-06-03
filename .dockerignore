@@ -1,0 +1,15 @@
+.git
+.github
+data
+verification
+node_modules
+.env
+.env.*
+*.log
+.DS_Store
+README*.md
+docs
+LICENSE
+CONTRIBUTING.md
+SECURITY.md
+DEPLOYMENT.md
