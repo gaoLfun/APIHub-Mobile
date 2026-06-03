@@ -1,4 +1,4 @@
-const CACHE_NAME = "apihub-mobile-v1";
+const CACHE_NAME = "apihub-mobile-v8";
 const ASSETS = ["/", "/index.html", "/app.css", "/app.js", "/manifest.webmanifest", "/icon.svg", "/icon-192.png", "/icon-512.png"];
 
 self.addEventListener("install", (event) => {
@@ -17,10 +17,10 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
   if (url.pathname.startsWith("/api/")) return;
   event.respondWith(
-    caches.match(event.request).then((cached) => cached || fetch(event.request).then((response) => {
+    fetch(event.request, { cache: "reload" }).then((response) => {
       const copy = response.clone();
       caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
       return response;
-    }))
+    }).catch(() => caches.match(event.request))
   );
 });
